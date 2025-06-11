@@ -1,0 +1,11 @@
+@import 'tailwindcss';
+@import url('https://fonts.googleapis.com/css2?family=Aclonica&display=swap');
+
+@theme {
+  --font-primary: 'Aclonica', sans-serif;
+}
+
+.primary-font {
+  font-family: var(--font-primary);
+  font-weight: 400;
+}
