@@ -1,7 +1,8 @@
 <template>
- <Header />
- <Home />
-
+  <section class="w-full mx-auto overflow-hidden">
+    <Header />
+    <Home />
+  </section>
 </template>
 
 <script>
@@ -10,20 +11,13 @@ import Home from './views/Home.vue'
 export default {
   name: 'App',
   components: {
-    Header, Home
+    Header,
+    Home,
   },
   data() {
-    return {
-    
-    }
+    return {}
   },
-  mounted() {
-    document.title = this.title;
-  }
-
 }
 </script>
 
-<style>
-
-</style>
+<style></style>

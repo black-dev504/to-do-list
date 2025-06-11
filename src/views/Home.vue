@@ -1,28 +1,26 @@
 <template>
-  <section class="bg-[#171717] min-h-screen primary-font">
-    <div class="bg-[#171717] px-5 lg:px-20 py-15">
-      <div class="flex w-6/10 mx-auto gap-4">
-        <div class="flex h-12 items-center mb-10 group border-b-1 border-[#3E1671] w-full">
-          <input
-            @click="toggleInput"
-            class="text-white py-3 px-2 w-full h-full focus:outline-0"
-            placeholder="Task Category"
-            type="text"
-            v-model="category"
-          />
-        </div>
-
-        <button
-          @click="addCategory"
-          class="text-white flex gap-4 justify-center w-10 h-10 bg-[#9E78CF] items-center rounded-lg cursor-pointer"
-        >
-          <img src="/icons/plus.svg" class="w-5 h-5" alt="" />
-        </button>
+  <section class="bg-[#171717] min-h-screen primary-font px-5 lg:px-20 py-15">
+    <div class="flex gap-4 mx-auto category-input w-6/10">
+      <div class="flex h-12 items-center mb-10 group border-b-1 border-[#3E1671] w-full">
+        <input
+          @click="toggleInput"
+          class="w-full h-full px-2 py-3 text-white focus:outline-0"
+          placeholder="Task Category"
+          type="text"
+          v-model="category"
+        />
       </div>
+
+      <button
+        @click="addCategory"
+        class="text-white flex gap-4 justify-center w-10 h-10 bg-[#9E78CF] items-center rounded-lg cursor-pointer"
+      >
+        <img src="/icons/plus.svg" class="w-5 h-5" alt="" />
+      </button>
     </div>
 
-    <div class="px-5 lg:px-20">
-      <div class="flex gap-5">
+    <div class="py-20">
+      <div class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
         <div v-for="(list, index) in toDoList" :key="index">
           <toDo
             :category="list.category"
@@ -43,13 +41,8 @@ export default {
   name: 'Home',
   data() {
     return {
-      clicked: false,
-
       category: '',
       tasks: [],
-      totalTasks: 0,
-      completedTasks: 0,
-
       toDoList: [],
     }
   },
@@ -60,6 +53,7 @@ export default {
     toggleInput() {
       this.clicked = true
     },
+
     addCategory() {
       const exists = this.toDoList.some((list) => list.category === this.category)
       if (!exists && this.category.trim() !== '') {
@@ -82,16 +76,13 @@ export default {
       }
     },
 
-    deleteTask(category, index) {
+    deleteTask(category, id) {
       const currentList = this.toDoList.find((list) => list.category === category)
 
-      if (currentList && currentList.tasks[index]) {
-        currentList.tasks.splice(index, 1)
+      if (currentList) {
+        currentList.tasks = currentList.tasks.filter((task) => task.id !== id)
       }
     },
-  },
-  mounted() {
-    document.title = 'Do it'
   },
 }
 </script>
