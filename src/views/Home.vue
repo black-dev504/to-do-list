@@ -8,6 +8,8 @@
           placeholder="Task Category"
           type="text"
           v-model="category"
+          required
+          @keyup.enter="addCategory"
         />
       </div>
 
@@ -43,7 +45,7 @@ export default {
     return {
       category: '',
       tasks: [],
-      toDoList: [],
+      toDoList: JSON.parse(localStorage.getItem('toDoList')) || [],
     }
   },
   components: {
@@ -55,24 +57,42 @@ export default {
     },
 
     addCategory() {
+      this.toDoList = JSON.parse(localStorage.getItem('toDoList')) || []
       const exists = this.toDoList.some((list) => list.category === this.category)
       if (!exists && this.category.trim() !== '') {
         this.toDoList.push({
           category: this.category,
           tasks: [],
         })
+        localStorage.setItem(this.category + 'tasks', JSON.stringify([]))
+        localStorage.setItem('toDoList', JSON.stringify(this.toDoList))
+
         this.category = ''
       }
     },
 
     removeCategory(category) {
       this.toDoList = this.toDoList.filter((list) => list.category !== category)
+      localStorage.setItem('toDoList', JSON.stringify(this.toDoList))
     },
 
     addTask(category, newTask) {
+      if (newTask.trim() === '') return
+
       const currentList = this.toDoList.find((list) => list.category === category)
+      const existingTasks = JSON.parse(localStorage.getItem(category + 'tasks')) || []
+
+      const newTaskObj = {
+        id: Date.now() + Math.random(),
+        text: newTask,
+        completed: false,
+      }
+
+      const updatedTasks = [...existingTasks, newTaskObj]
+      localStorage.setItem(category + 'tasks', JSON.stringify(updatedTasks))
+
       if (currentList) {
-        currentList.tasks.push({ id: Date.now() + Math.random(), text: newTask, completed: false })
+        currentList.tasks = updatedTasks
       }
     },
 
@@ -81,8 +101,15 @@ export default {
 
       if (currentList) {
         currentList.tasks = currentList.tasks.filter((task) => task.id !== id)
+        const updatedTasks = currentList.tasks
+        localStorage.setItem(category + 'tasks', JSON.stringify(updatedTasks))
       }
     },
+  },
+  mounted() {
+    this.toDoList.forEach((list) => {
+      list.tasks = JSON.parse(localStorage.getItem(list.category + 'tasks')) || []
+    })
   },
 }
 </script>

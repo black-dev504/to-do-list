@@ -21,6 +21,9 @@
             @click="toggleCheck(task)"
             v-model="task.completed"
             type="checkbox"
+            :id="task.id"
+            :value="task.completed"
+            required
             class="appearance-none checked:bg-[#a09f9f] w-4 h-4 cursor-pointer border-1 border-[#9E78CF] bg-[#2E2E2E] rounded-sm"
           />
           <div class="flex items-center justify-between w-full">
@@ -45,6 +48,7 @@
         v-model="newTask"
         type="text"
         placeholder="Add new task"
+        @keyup.enter="addTask"
         class="text-white px-2 py-1 border-b-1 border-[#9E78CF] w-full focus:outline-0"
       />
     </div>
